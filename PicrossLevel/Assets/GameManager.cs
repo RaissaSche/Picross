@@ -4,64 +4,74 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public GameObject tile, tile2;
+	public GameObject tile;
 	//-6,-9
 	public int xInicial, yInicial;
 	private int xTilesDesejadas, yTilesDesejadas;
 	private int[,] tipoTile;
 	private int xTipoTileIterator, yTipoTileIterator;
+	private Color myPink, myPurple, myLightPink;
 
-	void Start(){
+	void Start () {
 
-	xTilesDesejadas = yTilesDesejadas = 15;
-	xTipoTileIterator = yTipoTileIterator = 0;
-	tipoTile = new int[15, 15] {
-	{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-	{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, 
-	};
+		myPink = new Color(0.92f,0.12f,0.39f);
+		myLightPink = new Color(0.94f,0.38f,0.57f);
+		myPurple = new Color(0.40f,0.23f,0.72f);
+		xTilesDesejadas = yTilesDesejadas = 15;
+		xTipoTileIterator = yTipoTileIterator = 0;
+		tipoTile = new int[15, 15] { 
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 }, 
+		{ 0, 1, 1, 2, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0 }, 
+		{ 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 }, 
+		{ 0, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 }, 
+		{ 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 }, 
+		{ 0, 0, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 }, 
+		{ 0, 0, 0, 1, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+		};
 
-        StartCoroutine(InstanciaTiles());
-    }
+		StartCoroutine (InstanciaTiles ());
+	}
 
-    IEnumerator InstanciaTiles(){	
-		
-		for (float y = yInicial + yTilesDesejadas; yInicial < y; y--){
+	IEnumerator InstanciaTiles () {
 
-			for (float x = xInicial; x < xInicial + xTilesDesejadas; x++){
+		for (float y = yInicial + yTilesDesejadas; yInicial < y; y--) {
 
-				if (tipoTile[yTipoTileIterator , xTipoTileIterator] == 1){
-    			Instantiate(tile, new Vector3(x/2, y/2, 0), Quaternion.identity);
+			for (float x = xInicial; x < xInicial + xTilesDesejadas; x++) {
+
+				//refatorar, credo!!
+				if (tipoTile[yTipoTileIterator, xTipoTileIterator] == 0) {
+					tile.GetComponent<SpriteRenderer>(). color = myPurple;
+					Instantiate (tile, new Vector3 (x / 2, y / 2, 2), Quaternion.identity);
+				} else if (tipoTile[yTipoTileIterator, xTipoTileIterator] == 1) {
+					tile.GetComponent<SpriteRenderer>(). color = myPink;
+					Instantiate (tile, new Vector3 (x / 2, y / 2, 2), Quaternion.identity);
 				} else {
-				Instantiate(tile2, new Vector3(x/2, y/2, 0), Quaternion.identity);
+					tile.GetComponent<SpriteRenderer>(). color = myLightPink;
+					Instantiate (tile, new Vector3 (x / 2, y / 2, 2), Quaternion.identity);
 				}
 
-				yield return new WaitForSeconds(0.01f);
-				
-					if(xTipoTileIterator < 14){
-						xTipoTileIterator++;
-					} else {
-						xTipoTileIterator = 0;
-					}
+				yield return new WaitForSeconds (0.01f);
+
+				if (xTipoTileIterator < 14) {
+					xTipoTileIterator++;
+				} else {
+					xTipoTileIterator = 0;
 				}
-				
-				if(yTipoTileIterator < 14){
+			}
+
+			if (yTipoTileIterator < 14) {
 				yTipoTileIterator++;
 			} else {
 				yTipoTileIterator = 0;
 			}
-			}
 		}
-    }
+	}
+}
